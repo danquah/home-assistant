@@ -1,0 +1,191 @@
+
+# Loads default set of integrations. Do not remove.
+default_config:
+
+# Load frontend themes from the themes folder
+frontend:
+  themes: !include_dir_merge_named themes
+
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml
+
+template:
+  - sensor:
+      - name: "Average temperature"
+        unit_of_measurement: "°C"
+        state: >
+          {% set bedroom = states('sensor.bedroom_temperature') | float %}
+          {% set kitchen = states('sensor.kitchen_temperature') | float %}
+
+          {{ ((bedroom + kitchen) / 2) | round(1, default=0) }}
+
+mqtt:
+  - sensor: &watts_sensor
+      name: Positive Active Energy
+      device:
+        name: Watts Live (11D1042220004433)
+        identifiers: 11D1042220004433
+      device_class: energy
+      state_class: total
+      unit_of_measurement: Wh
+      state_topic: watts/11D1042220004433/measurement
+      value_template: "{{ value_json.positive_active_energy }}"
+      unique_id: positive_active_energy
+  - sensor:
+      << : *watts_sensor
+      name: Negative Active Energy
+      device_class: energy
+      state_class: total
+      unit_of_measurement: Wh
+      value_template: "{{ value_json.negative_active_energy }}"
+      unique_id: negative_active_energy
+  - sensor:
+      << : *watts_sensor
+      name: Positive Reactive Energy
+      device_class: energy
+      state_class: total
+      unit_of_measurement: varh
+      value_template: "{{ value_json.positive_reactive_energy }}"
+      unique_id: positive_reactive_energy
+  - sensor:
+      << : *watts_sensor
+      name: Negative Reactive Energy
+      device_class: energy
+      state_class: total
+      unit_of_measurement: varh
+      value_template: "{{ value_json.negative_reactive_energy }}"
+      unique_id: negative_reactive_energy
+
+  - sensor:
+      << : *watts_sensor
+      name: Positive Active Power
+      device_class: power
+      state_class: measurement
+      unit_of_measurement: W
+      value_template: "{{ value_json.positive_active_power }}"
+      unique_id: positive_active_power
+  - sensor:
+      << : *watts_sensor
+      name: Negative Active Power
+      device_class: power
+      state_class: measurement
+      unit_of_measurement: W
+      value_template: "{{ value_json.negative_active_power }}"
+      unique_id: negative_active_power
+
+  - sensor:
+      << : *watts_sensor
+      name: Positive Active Power L1
+      device_class: power
+      state_class: measurement
+      unit_of_measurement: W
+      value_template: "{{ value_json.positive_active_power_l1 }}"
+      unique_id: positive_active_power_l1
+  - sensor:
+      << : *watts_sensor
+      name: Positive Active Power L2
+      device_class: power
+      state_class: measurement
+      unit_of_measurement: W
+      value_template: "{{ value_json.positive_active_power_l2 }}"
+      unique_id: positive_active_power_l2
+  - sensor:
+      << : *watts_sensor
+      name: Positive Active Power L3
+      device_class: power
+      state_class: measurement
+      unit_of_measurement: W
+      value_template: "{{ value_json.positive_active_power_l3 }}"
+      unique_id: positive_active_power_l3
+  - sensor:
+      << : *watts_sensor
+      name: Negative Active Power L1
+      device_class: power
+      state_class: measurement
+      unit_of_measurement: W
+      value_template: "{{ value_json.negative_active_power_l1 }}"
+      unique_id: negative_active_power_l1
+  - sensor:
+      << : *watts_sensor
+      name: Negative Active Power L2
+      device_class: power
+      state_class: measurement
+      unit_of_measurement: W
+      value_template: "{{ value_json.negative_active_power_l2 }}"
+      unique_id: negative_active_power_l2
+  - sensor:
+      << : *watts_sensor
+      name: Negative Active Power L3
+      device_class: power
+      state_class: measurement
+      unit_of_measurement: W
+      value_template: "{{ value_json.negative_active_power_l3 }}"
+      unique_id: negative_active_power_l3
+
+  - sensor:
+      << : *watts_sensor
+      name: Positive Reactive Power
+      device_class: reactive_power
+      state_class: measurement
+      unit_of_measurement: var
+      value_template: "{{ value_json.positive_reactive_power }}"
+      unique_id: positive_reactive_power
+  - sensor:
+      << : *watts_sensor
+      name: Negative Reactive Power
+      device_class: reactive_power
+      state_class: measurement
+      unit_of_measurement: var
+      value_template: "{{ value_json.negative_reactive_power }}"
+      unique_id: negative_reactive_power
+
+  - sensor:
+      << : *watts_sensor
+      name: Voltage L1
+      device_class: voltage
+      state_class: measurement
+      unit_of_measurement: V
+      value_template: "{{ value_json.voltage_l1 }}"
+      unique_id: voltage_l1
+  - sensor:
+      << : *watts_sensor
+      name: Voltage L2
+      device_class: voltage
+      state_class: measurement
+      unit_of_measurement: V
+      value_template: "{{ value_json.voltage_l2 }}"
+      unique_id: voltage_l2
+  - sensor:
+      << : *watts_sensor
+      name: Voltage L3
+      device_class: voltage
+      state_class: measurement
+      unit_of_measurement: V
+      value_template: "{{ value_json.voltage_l3 }}"
+      unique_id: voltage_l3
+
+  - sensor:
+      << : *watts_sensor
+      name: Current L1
+      device_class: current
+      state_class: measurement
+      unit_of_measurement: A
+      value_template: "{{ value_json.current_l1 }}"
+      unique_id: current_l1
+  - sensor:
+      << : *watts_sensor
+      name: Current L2
+      device_class: current
+      state_class: measurement
+      unit_of_measurement: A
+      value_template: "{{ value_json.current_l2 }}"
+      unique_id: current_l2
+  - sensor:
+      << : *watts_sensor
+      name: Current L3
+      device_class: current
+      state_class: measurement
+      unit_of_measurement: A
+      value_template: "{{ value_json.current_l3 }}"
+      unique_id: current_l3

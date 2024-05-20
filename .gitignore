@@ -1,0 +1,17 @@
+ Logs
+logs
+*.log
+# Python cache
+__pycache__
+*.pyc
+
+.storage
+*.db
+*.db-journal
+
+ha-config/backups
+secrets.yaml
+home-assistant.log*
+
+ha-config/custom_components/hacs
+
